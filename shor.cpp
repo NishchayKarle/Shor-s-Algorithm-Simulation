@@ -3,6 +3,7 @@
 #include "shor.h"
 #include "rand.h"
 #include "methods.h"
+#include <omp.h>
 
 #include <iostream>
 
@@ -14,15 +15,19 @@ void IQFT(Register *reg, unsigned int start, unsigned int end)
 
 	// if (end == 0)
 	// 	end = reg->num_qubits;
-
-	for (unsigned int i = 0; i < floor((end - start) / 2.0); i++)
+unsigned int i = 0;
+// #pragma omp parallel shared(i, end, start) num_threads(2)
+	for (; i < floor((end - start) / 2.0); i++)
 		reg->Swap(start + i, end - i - 1);
 
 	// note: can't use unsigned int's here because unsigned j=-1
 	// is always greater than zero. NEED to convert end and start to int
 	// in order to properly compare.
+
+
 	for (int j = int(end) - 1; j >= int(start); j--)
 	{
+#pragma omp parallel shared(j) num_threads(2)
 		for (int k = int(end) - j - 1; k >= 1; k--)
 		{
 			// don't need to explicilty convert to unsigned int here, but might as well.
