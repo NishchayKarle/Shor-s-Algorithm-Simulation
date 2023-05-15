@@ -1,1 +1,1 @@
-# Shor-s-Algorithm-Simulation
+# Shors-Algorithm-Simulation
