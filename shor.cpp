@@ -15,9 +15,7 @@ void IQFT(Register *reg, unsigned int start, unsigned int end)
 
 	// if (end == 0)
 	// 	end = reg->num_qubits;
-unsigned int i = 0;
-// #pragma omp parallel shared(i, end, start) num_threads(2)
-	for (; i < floor((end - start) / 2.0); i++)
+	for (unsigned int i = 0; i < floor((end - start) / 2.0); i++)
 		reg->Swap(start + i, end - i - 1);
 
 	// note: can't use unsigned int's here because unsigned j=-1
@@ -27,15 +25,15 @@ unsigned int i = 0;
 
 	for (int j = int(end) - 1; j >= int(start); j--)
 	{
+#ifdef OPENMP
 #pragma omp parallel for shared(j) num_threads(128)
+#endif
 		for (int k = int(end) - j - 1; k >= 1; k--)
 		{
-			// don't need to explicilty convert to unsigned int here, but might as well.
 			reg->ControlledPhaseShift((unsigned int)(j + k), (unsigned int)j, -pi / double(1 << k)); // 1 << k is pow(2, k)
 		}
 		reg->Hadamard((unsigned int)j);
 	}
-	//*/
 }
 
 // FINDING THE PERIOD OF f(x) = a^x mod N USING THE QUANTUM ALGORITHM
@@ -50,7 +48,7 @@ unsigned int find_Shor_period(unsigned int a, unsigned int N, unsigned int depth
 
 	if (depth_limit <= 0)
 	{
-		printf("Reached maximum depth limit in period find. Returning 1.\n");
+		// printf("Reached maximum depth limit in period find. Returning 1.\n");
 		return 1;
 	}
 
@@ -187,13 +185,15 @@ unsigned int Shor(unsigned int N, unsigned int depth_limit)
 	*/
 	if (depth_limit <= 0)
 	{
-		printf("Reached maximum depth limit in Shor. Try again, or increase depth limit\n");
+		// printf("Reached maximum depth limit in Shor. Try again, or increase depth limit\n");
 		return 1;
 	}
 
 	if (N % 2 == 0)
 		return 2;
-	unsigned int a = (unsigned int)(floor(get_rand() * (N - 1) + 1));
+	// unsigned int a = (unsigned int)(floor(get_rand() * (N - 1) + 1));
+	unsigned int a = 13;
+
 	if (a == 1)
 		a++;
 	unsigned int g = gcd(a, N);
