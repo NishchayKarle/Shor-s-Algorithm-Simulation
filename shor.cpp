@@ -27,7 +27,7 @@ unsigned int i = 0;
 
 	for (int j = int(end) - 1; j >= int(start); j--)
 	{
-#pragma omp parallel shared(j) num_threads(2)
+#pragma omp parallel for shared(j) num_threads(128)
 		for (int k = int(end) - j - 1; k >= 1; k--)
 		{
 			// don't need to explicilty convert to unsigned int here, but might as well.

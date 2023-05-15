@@ -6,7 +6,7 @@ using namespace std;
 
 void _test_Shor_factorization()
 {
-	unsigned int a = 97 * 101;
+	unsigned int a = 303;
 	cout << "\tLooking for factor of " << a << endl;
 	int s = omp_get_wtime();
 	unsigned int b = Shor(a);
