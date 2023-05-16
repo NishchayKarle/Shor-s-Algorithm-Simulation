@@ -6,13 +6,12 @@ using namespace std;
 
 void _test_Shor_factorization()
 {
-	unsigned int a = 303;
-	cout << "\tLooking for factor of " << a << endl;
+	unsigned int a = 2813;
+	// cout << "\tLooking for factor of " << a << endl;
 	int s = omp_get_wtime();
 	unsigned int b = Shor(a);
 	int e = omp_get_wtime();
-	cout << "\t"
-		 << "a Shor factor of " << a << " is " << b << endl;
+	cout <<"a Shor factor of " << a << " is " << b << endl;
 
 	cout << "time: " << e - s << endl;
 	cout << endl;
