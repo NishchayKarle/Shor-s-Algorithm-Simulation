@@ -19,6 +19,7 @@ public:
 	unsigned int num_qubits;
 	static vec_states all_states(unsigned int n);
 	Register(unsigned int num_qubits);
+	Register(Register &r);
 	void set_nonzero_states(state_map &s);
 	amp amplitude(string state);
 	double probability(string state);
