@@ -20,6 +20,16 @@ Register::Register(unsigned int num_qubits)
 	states[string(num_qubits, '0')] = amp(1, 0); // total prob 1;
 }
 
+Register::Register(Register &r)
+{
+	this->num_qubits = r.num_qubits;
+	state_map m;
+	for (state_map::iterator i = r.states.begin(); i != r.states.end(); ++i)
+	{
+		this->states[i->first] = i->second;
+	}
+}
+
 vec_states Register::all_states(unsigned int n)
 {
 	/*
